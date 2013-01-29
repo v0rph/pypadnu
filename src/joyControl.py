@@ -23,16 +23,4 @@ def joystickControl(mjoy):
             return "button0"
           if (mb2):
             return "button2"
-#pygame.joystick.init()
-#pygame.display.init()
-#if pygame.joystick.get_count():
-#  mjoy = pygame.joystick.Joystick(0)
-#  mjoy.init()
-#  print mjoy.get_numaxes()
-#  a = joystickControl()
-#  print a
-#  mjoy.quit()
-
-
-#pygame.joystick.quit()
 

@@ -175,16 +175,3 @@ pygame.joystick.quit()
 
 os.system('clear')
 
-
-# menu = 1
-#nitems = 5
-#while (menu > 0 )and (menu < nitems) :
-#  os.system('cls')
-#  print "Menu"
-#  if menu == 1:  print "(*)"
-#  else: print
-#  print " 1. Terminal\n"
-# print "( )"
-#  print "gnGeo\n"
-# */ 
-#  
