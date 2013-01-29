@@ -6,7 +6,11 @@
 
  
 from time import sleep
+import pygame
+import joyControl
 import curses, os #curses is the interface for capturing key presses on the menu, os launches the files
+pygame.joystick.init()
+joy = 0
 screen = curses.initscr() #initializes a new window for capturing key presses
 curses.noecho() # Disables automatic echoing of key presses (prevents program from input each key twice)
 curses.cbreak() # Disables line buffering (runs each key as it is pressed rather than waiting for the return key to pressed)
@@ -69,9 +73,19 @@ def runmenu(menu, parent):
   pos=0 #pos is the zero-based index of the hightlighted menu option. Every time runmenu is called, position returns to 0, when runmenu ends the position is returned and tells the program what opt$
   oldpos=None # used to prevent the screen being redrawn every time
   x = None #control for while loop, let's you scroll through options until return key is pressed then returns pos to program
- 
+
+  #----detect if joystick present
+  joy = 0
+  if (pygame.joystick.get_count() > 0):
+    joy = 1
+    pygame.display.init()
+    mjoy = pygame.joystick.Joystick(0)
+    mjoy.init()
+
+  joybtn = 0;
   # Loop until return key is pressed
-  while x !=ord('\n'):
+  while (x !=ord('\n')) and (joybtn == 0):
+    joybtn = 0;
     if pos != oldpos:
       oldpos = pos
       screen.border(0)
@@ -91,9 +105,23 @@ def runmenu(menu, parent):
       screen.addstr(5+optioncount,4, "%d - %s" % (optioncount+1, lastoption), textstyle)
       screen.refresh()
       # finished updating screen
- 
-    x = screen.getch() # Gets user input
- 
+
+
+
+    if (joy == 0):
+      x = screen.getch() # Gets user input
+    else:
+      temp = joyControl.joystickControl(mjoy)
+      os.system('clear')
+      screen.clear()
+      screen.refresh()
+      if temp == "Up":
+        x = 259;
+      elif temp == "Down":
+        x = 258;
+      elif temp == "button2":
+        x = ord('\n')
+        joybtn = 1
     # What is user input?
     if x >= ord('1') and x <= ord(str(optioncount+1)):
       pos = x - ord('0') - 1 # convert keypress back to a number, then subtract 1 to get index
@@ -139,6 +167,12 @@ def processmenu(menu, parent=None):
 # Main program
 processmenu(menu_data)
 curses.endwin() #VITAL! This closes out the menu system and returns you to the bash prompt.
+
+if joy == True:
+  mjoy.quit()
+  pygame.display.quit()
+pygame.joystick.quit()
+
 os.system('clear')
 
 
