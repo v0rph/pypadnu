@@ -115,9 +115,9 @@ def runmenu(menu, parent):
       os.system('clear')
       screen.clear()
       screen.refresh()
-      if temp == "Up":
+      if temp == "Up" or temp == "Left":
         x = 259;
-      elif temp == "Down":
+      elif temp == "Down" or temp == "Right":
         x = 258;
       elif temp == "button2":
         x = ord('\n')
