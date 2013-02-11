@@ -32,15 +32,6 @@ menu_data = {
     { 'title': "Start x", 'type': COMMAND, 'command': 'startx' },
         { 'title': "ioQuake3", 'type': COMMAND, 'command': '~/Quake3/bin/ioquake3.arm' },
         { 'title': "gnGeo", 'type': COMMAND, 'command': '~/gngeoBin/bin/gngeo' },
-#        { 'title': "Dosbox Games", 'type': MENU, 'subtitle': "Please select an option...",
-#        'options': [
-#          { 'title': "Midnight Rescue", 'type': COMMAND, 'command': 'dosbox /media/samba/Apps/dosbox/doswin/games/SSR/SSR.EXE -exit' },
-#          { 'title': "Outnumbered", 'type': COMMAND, 'command': 'dosbox /media/samba/Apps/dosbox/doswin/games/SSO/SSO.EXE -exit' },
-#          { 'title': "Treasure Mountain", 'type': COMMAND, 'command': 'dosbox /media/samba/Apps/dosbox/doswin/games/SST/SST.EXE -exit' },
-#        ]
-#        },
-#        { 'title': "Pianobar", 'type': COMMAND, 'command': 'clear && pianobar' },
-#        { 'title': "Windows 3.1", 'type': COMMAND, 'command': 'dosbox /media/samba/Apps/dosbox/doswin/WINDOWS/WIN.COM -conf /home/pi/scripts/dosbox2.conf -exit' },
         { 'title': "Reboot", 'type': MENU, 'subtitle': "Select Yes to Reboot",
         'options': [
           {'title': "NO", 'type': EXITMENU, },
@@ -112,6 +103,7 @@ def runmenu(menu, parent):
       x = screen.getch() # Gets user input
     else:
       temp = joyControl.joystickControl(mjoy)
+      #-- ugly hack to clear some unwanted output text when polling the joystick
       os.system('clear')
       screen.clear()
       screen.refresh()
@@ -168,10 +160,12 @@ def processmenu(menu, parent=None):
 processmenu(menu_data)
 curses.endwin() #VITAL! This closes out the menu system and returns you to the bash prompt.
 
+#-- safely stop pygame 
 if joy == True:
   mjoy.quit()
   pygame.display.quit()
 pygame.joystick.quit()
 
+#-- return console to regular behaviour
 os.system('clear')
 
